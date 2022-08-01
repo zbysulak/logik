@@ -7,15 +7,12 @@
       @guessClicked="setColors"
     />
     <v-row class="mt-2">
-      <v-select
-        class="mx-2"
-        v-for="slot in logik.slots"
+      <!-- v-for IN directive is 1-BASED! -->
+      <color-selector
+        v-for="(_, slot) in logik.slots"
         v-bind:key="slot"
-        :items="logik.usedColors"
-        item-title="name"
-        item-value="code"
         v-model="colorsToCheck[slot]"
-        :class="slot"
+        :colors="logik.usedColors"
       />
       <v-btn @click="check">Check</v-btn>
       <v-btn @click="clear" icon><v-icon>mdi-close</v-icon></v-btn>
@@ -26,17 +23,18 @@
 <script setup>
 import Logik from "../plugins/logic"
 import GuessItem from "./GuessItem.vue"
+import ColorSelector from "./ColorSelector.vue"
 import { ref, onMounted, reactive } from "vue"
 
 var logik = new Logik({ colors: 6, slots: 4 })
 const guesses = ref([])
+const t = ref("blue")
 
 console.log(logik.usedColors)
 // reactive state
 const colorsToCheck = ref([])
 
 function check() {
-  console.log(Object.values(colorsToCheck.value))
   var a = logik.check(Object.values(colorsToCheck.value))
   guesses.value.push(a)
 }
@@ -46,13 +44,6 @@ function clear() {
 }
 
 function setColors(colors) {
-  console.log(colors)
   colorsToCheck.value = colors
-  console.log(colorsToCheck.value)
 }
-
-// lifecycle hooks
-onMounted(() => {
-  console.log("mounted")
-})
 </script>

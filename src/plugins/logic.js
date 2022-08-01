@@ -19,23 +19,16 @@ export default class Logic {
     allowMultiple: false
   }
 
-  #allColors = [
-    { name: "red", code: "red" },
-    { name: "green", code: "green" },
-    { name: "blue", code: "blue" },
-    { name: "yellow", code: "yellow" },
-    { name: "orange", code: "orange" },
-    { name: "black", code: "black" }
-  ]
+  #allColors = ["red", "green", "blue", "yellow", "orange", "black"]
 
   check(array) {
     if (array.length != this.slots) throw "Wrong guess length"
     let position = 0
     let color = 0
     for (let i = 0; i < array.length; i++) {
-      if (array[i] == this.#target[i].code) position++
+      if (array[i] == this.#target[i]) position++
     }
-    let t = [...this.#target.map((e) => e.code)]
+    let t = [...this.#target]
     console.log(t, array)
     for (let i = 0; i < array.length; i++) {
       if (t.includes(array[i])) {
