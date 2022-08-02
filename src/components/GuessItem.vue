@@ -37,7 +37,7 @@ const guessColors = Object.values(props.guess.colors)
 
 .guess-item {
   display: inline-block;
-  width: 5em;
+  width: 6.4em;
   height: 3em;
   border: 2px solid #303030;
 }

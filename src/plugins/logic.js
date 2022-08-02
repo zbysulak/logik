@@ -2,24 +2,18 @@ export default class Logic {
   slots
   usedColors
   #target
-  constructor(opts) {
-    this.slots = opts.slots
-    this.usedColors = this.#allColors.slice(0, opts.colors + 1)
+
+  startGame({ colors = 6, slots = 4, allowMultiple = false }) {
+    console.log("sg", colors, slots, allowMultiple)
+    this.slots = slots
+    this.usedColors = this.#allColors.slice(0, colors)
     let colorsCopy = this.#shuffle([...this.usedColors])
     this.#target = []
     //todo allowmultiple
-    for (let index = 0; index < opts.slots; index++) {
+    for (let index = 0; index < slots; index++) {
       this.#target.push(colorsCopy.pop())
     }
   }
-
-  #defaultOptions = {
-    colors: 6,
-    slots: 4,
-    allowMultiple: false
-  }
-
-  #allColors = ["red", "green", "blue", "yellow", "orange", "black"]
 
   check(array) {
     if (array.length != this.slots) throw "Wrong guess length"
@@ -58,4 +52,18 @@ export default class Logic {
 
     return array
   }
+
+  #allColors = [
+    "red",
+    "green",
+    "blue",
+    "yellow",
+    "orange",
+    "white",
+    "black",
+    "pink",
+    "brown",
+    "magenta",
+    "cyan"
+  ]
 }

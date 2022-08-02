@@ -33,6 +33,12 @@
             >Check</v-btn
           >
           <v-btn @click="clear" class="mx-2">Clear</v-btn>
+          <new-game-dialog @start="restartGame" />
+          <game-result-dialog
+            :dialog="showResult"
+            :success="resultSuccess"
+            @hide="showResult = false"
+          />
         </v-row>
       </v-container>
     </v-main>
@@ -43,14 +49,20 @@
 import Logik from "@/plugins/logic"
 import GuessItem from "@/components/GuessItem.vue"
 import ColorSelector from "@/components/ColorSelector.vue"
+import NewGameDialog from "@/components/NewGameDialog.vue"
+import GameResultDialog from "@/components/GameResultDialog.vue"
 import draggable from "vuedraggable"
 import { ref, onMounted } from "vue"
 
-var logik = new Logik({ colors: 3, slots: 2 })
+var logik = new Logik()
+
+const maxGuesses = 10
 
 const drag = ref(false)
 const guesses = ref([])
 const shaking = ref(false)
+const showResult = ref(false)
+const resultSuccess = ref(false)
 const colorsToCheck = ref(getArray())
 
 function update(code, idx) {
@@ -67,12 +79,27 @@ function getArray(colors) {
 
 function check() {
   const colors = Object.values(colorsToCheck.value).map((co) => co.code)
-  if (colors.some((c) => c == undefined)) {
+  if (
+    colors.some((c) => c == undefined) ||
+    guesses.value.length >= maxGuesses
+  ) {
     shaking.value = true
     return
   }
   let answer = logik.check(colors)
   guesses.value.push(answer)
+  if (answer.position == logik.slots) {
+    console.log("vyhrals")
+    showResult.value = true
+    resultSuccess.value = true
+  } else if (
+    guesses.value.length >= maxGuesses &&
+    answer.position != logik.slots
+  ) {
+    console.log("prohrals")
+    showResult.value = true
+    resultSuccess.value = false
+  }
 }
 
 function clear() {
@@ -81,6 +108,15 @@ function clear() {
 
 function setColors(colors) {
   colorsToCheck.value = getArray(colors)
+}
+
+function restartGame(settings) {
+  console.log("starting game with ", settings)
+  guesses.value = []
+  logik.startGame(settings)
+  colorsToCheck.value = getArray()
+
+  console.log("ng", logik.usedColors)
 }
 
 onMounted(() => {
