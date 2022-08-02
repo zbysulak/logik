@@ -28,11 +28,6 @@
 import { defineProps } from "vue"
 const props = defineProps(["guess"])
 const guessColors = Object.values(props.guess.colors)
-console.log(guessColors)
-console.log("guess: ", props.guess, props.guess.colors, props.guess.position)
-console.log("guess: ", props.guess)
-console.log("guess: ", props.guess.colors)
-console.log("guess: ", props.guess.color, props.guess.position)
 </script>
 
 <style scoped>

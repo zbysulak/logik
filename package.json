@@ -12,6 +12,7 @@
     "core-js": "^3.8.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
+    "vuedraggable": "^4.1.0",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0"
   },
@@ -38,7 +39,10 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {"no-unused-vars": "off"}
+    "rules": {
+      "no-unused-vars": "off",
+      "vue/no-unused-vars" :"off"
+    }
   },
   "browserslist": [
     "> 1%",

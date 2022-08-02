@@ -29,7 +29,6 @@ export default class Logic {
       if (array[i] == this.#target[i]) position++
     }
     let t = [...this.#target]
-    console.log(t, array)
     for (let i = 0; i < array.length; i++) {
       if (t.includes(array[i])) {
         t.splice(t.indexOf(array[i]), 1)
