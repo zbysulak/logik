@@ -39,6 +39,7 @@
             :success="resultSuccess"
             @hide="showResult = false"
           />
+          <help-dialog />
         </v-row>
       </v-container>
     </v-main>
@@ -50,6 +51,7 @@ import Logik from "@/plugins/logic"
 import GuessItem from "@/components/GuessItem.vue"
 import ColorSelector from "@/components/ColorSelector.vue"
 import NewGameDialog from "@/components/NewGameDialog.vue"
+import HelpDialog from "@/components/HelpDialog.vue"
 import GameResultDialog from "@/components/GameResultDialog.vue"
 import draggable from "vuedraggable"
 import { ref, onMounted } from "vue"
