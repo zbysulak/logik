@@ -11,7 +11,6 @@
         <v-row class="mt-2">
           <draggable
             v-model="colorsToCheck"
-            v-bind="dragOptions"
             @start="drag = true"
             @end="drag = false"
             item-key="order"
@@ -26,7 +25,13 @@
               </div>
             </template>
           </draggable>
-          <v-btn @click="check" class="mx-2">Check</v-btn>
+          <v-btn
+            @click="check"
+            id="btnCheck"
+            class="mx-2"
+            :class="{ 'apply-shake': shaking }"
+            >Check</v-btn
+          >
           <v-btn @click="clear" class="mx-2">Clear</v-btn>
         </v-row>
       </v-container>
@@ -39,41 +44,35 @@ import Logik from "@/plugins/logic"
 import GuessItem from "@/components/GuessItem.vue"
 import ColorSelector from "@/components/ColorSelector.vue"
 import draggable from "vuedraggable"
-import { ref, onMounted, reactive } from "vue"
+import { ref, onMounted } from "vue"
+
+var logik = new Logik({ colors: 3, slots: 2 })
 
 const drag = ref(false)
-var logik = new Logik({ colors: 3, slots: 2 })
 const guesses = ref([])
-
-function dragOptions() {
-  return {
-    ghostClass: "ghost"
-  }
-}
+const shaking = ref(false)
+const colorsToCheck = ref(getArray())
 
 function update(code, idx) {
   colorsToCheck.value[idx].code = code
 }
 
-console.log(logik.usedColors)
-// reactive state
 function getArray(colors) {
   let array = []
   for (let i = 0; i < logik.slots; i++) {
     array.push({ code: colors ? colors[i] : undefined, order: i })
   }
-  console.log(colors, array)
   return array
 }
 
-const colorsToCheck = ref(getArray())
-
 function check() {
-  const c = Object.values(colorsToCheck.value).map((co) => co.code)
-  console.log(colorsToCheck.value, c)
-  var a = logik.check(c)
-  console.log(a)
-  guesses.value.push(a)
+  const colors = Object.values(colorsToCheck.value).map((co) => co.code)
+  if (colors.some((c) => c == undefined)) {
+    shaking.value = true
+    return
+  }
+  let answer = logik.check(colors)
+  guesses.value.push(answer)
 }
 
 function clear() {
@@ -82,14 +81,45 @@ function clear() {
 
 function setColors(colors) {
   colorsToCheck.value = getArray(colors)
-  console.log(colorsToCheck)
 }
+
+onMounted(() => {
+  // could it be done using ref?
+  document.querySelector("#btnCheck").addEventListener("animationend", () => {
+    shaking.value = false
+  })
+})
 </script>
 <style scoped>
 .selector-container {
   display: inline-block;
 }
-.selector-container .mdi {
-  cursor: ew-resize;
+
+/* Standard syntax */
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+.apply-shake {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>
