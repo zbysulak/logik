@@ -16,32 +16,52 @@
         <v-window-item value="rules">
           <v-card color="basil" flat>
             <v-card-text>
-              You have to guess colors and theirs order correctly. You have
-              total of 10 guesses. After each guess you will get result of
-              combination of black and white dots. White dot means one of your
-              colors is correct. Black dot means one of your colors is correct
-              AND also its position. Order of black and white dots does not mean
-              anything.
+              <p>
+                You have to guess colors and theirs order correctly. You have
+                total of 10 guesses.
+              </p>
+              <p>
+                After each guess you will get result of combination of black and
+                white dots.
+              </p>
+              <ul>
+                <li>White dot means one of your colors is correct.</li>
+                <li>
+                  Black dot means one of your colors is correct AND also its
+                  position.
+                </li>
+                <li>Order of black and white dots does not mean anything.</li>
+              </ul>
             </v-card-text>
           </v-card>
         </v-window-item>
         <v-window-item value="controls">
           <v-card color="basil" flat>
             <v-card-text>
-              <p>
-                To start a game you have to select few options first. 'Number of
-                slots' is number of colors you have to guess. 'Number of colors'
-                is total number of colors from which 'dealer' select your
-                target. 'Allow multiple colors' means 'dealer' can select same
-                color in multiple slots, which also increases difficulty.
-              </p>
+              <p>To start a game you have to select few options first.</p>
+              <ul>
+                <li>
+                  'Number of slots' is number of colors you have to guess.
+                </li>
+                <li>
+                  'Number of colors' is total number of colors from which
+                  'dealer' select your target.
+                </li>
+                <li>
+                  'Allow multiple colors' means 'dealer' can select same color
+                  in multiple slots, which also increases difficulty.
+                </li>
+              </ul>
               <p>
                 After game starts you can start guessing by selecting your
-                colors and pressing 'Check' button. 'Clear' buttons resets you
-                selection. You can 'go back' to your previous selection by
-                clicking on the guess. It is possible to swap colors by
-                drag&droping them.
+                colors and pressing 'Check' button.
               </p>
+              <p>'Clear' buttons resets you selection.</p>
+              <p>
+                You can 'go back' to your previous selection by clicking on the
+                guess.
+              </p>
+              <p>It is possible to swap colors by drag&droping them.</p>
             </v-card-text>
           </v-card>
         </v-window-item>
