@@ -17,7 +17,7 @@
         ></v-switch>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="secondary" @click="dialog = false">Close Dialog</v-btn>
+        <v-btn color="secondary" @click="dialog = false">Close</v-btn>
         <v-btn color="primary" @click="start">Start game</v-btn>
       </v-card-actions>
     </v-card>

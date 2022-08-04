@@ -1,45 +1,56 @@
 <template>
   <v-app>
     <v-main>
-      <v-container>
-        <guess-item
-          v-for="g in guesses"
-          :guess="g"
-          v-bind:key="g"
-          @guessClicked="setColors"
-        />
-        <v-row class="mt-2">
-          <draggable
-            v-model="colorsToCheck"
-            @start="drag = true"
-            @end="drag = false"
-            item-key="order"
-          >
-            <template #item="{ el, index }">
-              <div class="selector-container">
-                <color-selector
-                  v-bind:modelValue="colorsToCheck[index].code"
-                  v-on:update:modelValue="update($event, index)"
-                  :colors="logik.usedColors"
-                />
-              </div>
-            </template>
-          </draggable>
-          <v-btn
-            @click="check"
-            id="btnCheck"
-            class="mx-2"
-            :class="{ 'apply-shake': shaking }"
-            >Check</v-btn
-          >
-          <v-btn @click="clear" class="mx-2">Clear</v-btn>
-          <new-game-dialog @start="restartGame" />
-          <game-result-dialog
-            :dialog="showResult"
-            :success="resultSuccess"
-            @hide="showResult = false"
+      <v-container class="game-wrapper d-flex flex-column rounded-lg">
+        <div class="flex-grow-1">
+          <guess-item
+            v-for="g in guesses"
+            :guess="g"
+            v-bind:key="g"
+            @guessClicked="setColors"
           />
-          <help-dialog />
+        </div>
+        <v-row class="mt-2 flex-grow-0">
+          <v-container>
+            <v-row>
+              <draggable
+                v-model="colorsToCheck"
+                @start="drag = true"
+                @end="drag = false"
+                item-key="order"
+              >
+                <template #item="{ el, index }">
+                  <div class="selector-container">
+                    <color-selector
+                      v-bind:modelValue="colorsToCheck[index].code"
+                      v-on:update:modelValue="update($event, index)"
+                      :colors="logik.usedColors"
+                    />
+                  </div>
+                </template>
+              </draggable>
+            </v-row>
+            <v-row class="mt-6">
+              <v-btn
+                @click="check"
+                id="btnCheck"
+                class="mx-2"
+                :class="{ 'apply-shake': shaking }"
+                >Check</v-btn
+              >
+              <v-btn @click="randomize" class="mx-2">Randomize</v-btn>
+              <v-btn @click="clear" class="mx-2">Clear</v-btn>
+              <v-spacer />
+              <new-game-dialog @start="startGame" />
+              <game-result-dialog
+                :dialog="showResult"
+                :success="resultSuccess"
+                @hide="showResult = false"
+                @restart="restartGame"
+              />
+              <help-dialog />
+            </v-row>
+          </v-container>
         </v-row>
       </v-container>
     </v-main>
@@ -66,6 +77,7 @@ const shaking = ref(false)
 const showResult = ref(false)
 const resultSuccess = ref(false)
 const colorsToCheck = ref(getArray())
+const currentSettings = ref(null)
 
 function update(code, idx) {
   colorsToCheck.value[idx].code = code
@@ -83,7 +95,8 @@ function check() {
   const colors = Object.values(colorsToCheck.value).map((co) => co.code)
   if (
     colors.some((c) => c == undefined) ||
-    guesses.value.length >= maxGuesses
+    guesses.value.length >= maxGuesses ||
+    colors.length == 0
   ) {
     shaking.value = true
     return
@@ -108,17 +121,31 @@ function clear() {
   colorsToCheck.value = getArray()
 }
 
+function randomize() {
+  let all = [...logik.usedColors]
+  let c = []
+  while (c.length != logik.slots) {
+    const idx = Math.floor(Math.random() * all.length)
+    c.push(all[idx])
+    all.splice(idx, 1)
+  }
+  colorsToCheck.value = getArray(c)
+}
+
 function setColors(colors) {
   colorsToCheck.value = getArray(colors)
 }
 
-function restartGame(settings) {
-  console.log("starting game with ", settings)
+function restartGame() {
+  startGame(currentSettings.value)
+}
+
+function startGame(settings) {
+  currentSettings.value = settings
   guesses.value = []
   logik.startGame(settings)
   colorsToCheck.value = getArray()
-
-  console.log("ng", logik.usedColors)
+  console.log(colorsToCheck.value)
 }
 
 onMounted(() => {
@@ -129,6 +156,13 @@ onMounted(() => {
 })
 </script>
 <style scoped>
+.game-wrapper {
+  border: 2px solid #303030;
+  min-height: 60%;
+  max-width: 950px;
+  margin-top: 100px;
+}
+
 .selector-container {
   display: inline-block;
 }

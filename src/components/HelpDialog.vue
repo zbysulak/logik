@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" class="ml-2" icon
-        ><v-icon>mdi-help-circle-outline</v-icon></v-btn
-      >
+      <v-btn v-bind="props" class="ml-2">help</v-btn>
     </template>
     <v-card color="basil">
       <v-card-title class="text-center justify-center py-6"> Help</v-card-title>
@@ -66,6 +64,9 @@
           </v-card>
         </v-window-item>
       </v-window>
+      <v-card-actions
+        ><v-btn block @click="dialog = false">close</v-btn></v-card-actions
+      >
     </v-card>
   </v-dialog>
 </template>
