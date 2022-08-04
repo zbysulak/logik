@@ -40,7 +40,6 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-      "no-unused-vars": "off",
       "vue/no-unused-vars" :"off"
     }
   },

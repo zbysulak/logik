@@ -26,5 +26,5 @@
 <script setup>
 import { defineProps, defineEmits } from "vue"
 defineEmits(["update:modelValue"])
-const props = defineProps(["colors", "modelValue"])
+defineProps(["colors", "modelValue"])
 </script>

@@ -15,9 +15,9 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, defineProps } from "vue"
+import { defineEmits, defineProps } from "vue"
 const emit = defineEmits(["restart", "hide"])
-const props = defineProps(["dialog", "success"])
+defineProps(["dialog", "success"])
 
 function restart() {
   emit("hide")

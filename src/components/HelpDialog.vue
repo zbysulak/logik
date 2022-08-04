@@ -47,7 +47,7 @@
                 </li>
                 <li>
                   'Allow multiple colors' means 'dealer' can select same color
-                  in multiple slots, which also increases difficulty.
+                  in two slots, which also increases difficulty.
                 </li>
               </ul>
               <p>
@@ -75,7 +75,6 @@
 import { ref } from "vue"
 const dialog = ref(false)
 const tab = ref(null)
-const items = ref(["Appetizers", "Entrees", "Deserts", "Cocktails"])
 </script>
 
 <style lang="scss" scoped></style>

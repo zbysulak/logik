@@ -2,17 +2,13 @@ export default class Logic {
   slots
   usedColors
   #target
+  #allowMultiple
 
   startGame({ colors = 6, slots = 4, allowMultiple = false }) {
-    console.log("sg", colors, slots, allowMultiple)
     this.slots = slots
+    this.#allowMultiple = allowMultiple
     this.usedColors = this.#allColors.slice(0, colors)
-    let colorsCopy = this.#shuffle([...this.usedColors])
-    this.#target = []
-    //todo allowmultiple
-    for (let index = 0; index < slots; index++) {
-      this.#target.push(colorsCopy.pop())
-    }
+    this.#target = this.getRandomSet()
   }
 
   check(array) {
@@ -33,24 +29,17 @@ export default class Logic {
     return { colors: array, position, color }
   }
 
-  #shuffle(array) {
-    let currentIndex = array.length,
-      randomIndex
-
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex--
-
-      // And swap it with the current element.
-      ;[array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex]
-      ]
+  getRandomSet() {
+    let colorsCopy = [...this.usedColors]
+    if (this.#allowMultiple) colorsCopy = colorsCopy.concat(colorsCopy)
+    if (colorsCopy.length < this.slots) throw "Not enough colors"
+    let set = []
+    while (set.length != this.slots) {
+      const idx = Math.floor(Math.random() * colorsCopy.length)
+      set.push(colorsCopy[idx])
+      colorsCopy.splice(idx, 1)
     }
-
-    return array
+    return set
   }
 
   #allColors = [

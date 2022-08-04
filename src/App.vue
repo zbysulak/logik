@@ -19,7 +19,7 @@
                 @end="drag = false"
                 item-key="order"
               >
-                <template #item="{ el, index }">
+                <template #item="{ item, index }">
                   <div class="selector-container">
                     <color-selector
                       v-bind:modelValue="colorsToCheck[index].code"
@@ -126,14 +126,7 @@ function clear() {
 }
 
 function randomize() {
-  let all = [...logik.usedColors]
-  let c = []
-  while (c.length != logik.slots) {
-    const idx = Math.floor(Math.random() * all.length)
-    c.push(all[idx])
-    all.splice(idx, 1)
-  }
-  colorsToCheck.value = getArray(c)
+  colorsToCheck.value = getArray(logik.getRandomSet())
 }
 
 function setColors(colors) {
@@ -149,7 +142,6 @@ function startGame(settings) {
   guesses.value = []
   logik.startGame(settings)
   colorsToCheck.value = getArray()
-  console.log(colorsToCheck.value)
 }
 </script>
 <style scoped>

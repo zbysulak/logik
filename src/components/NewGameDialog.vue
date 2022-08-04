@@ -38,7 +38,6 @@ function start() {
     colors: colors.value,
     allowMultiple: allowMultiple.value
   }
-  console.log(settings)
   dialog.value = false
   emit("start", settings)
 }
