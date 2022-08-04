@@ -31,14 +31,14 @@
               </draggable>
             </v-row>
             <v-row class="mt-6">
-              <v-btn
-                @click="check"
-                id="btnCheck"
-                class="mx-2"
-                :class="{ 'apply-shake': shaking }"
-                >Check</v-btn
+              <shaking-button :enabled="canCheck" @clicked="check"
+                >Check</shaking-button
               >
-              <v-btn @click="randomize" class="mx-2">Randomize</v-btn>
+              <shaking-button
+                :enabled="logik.usedColors != undefined"
+                @clicked="randomize"
+                >Randomize</shaking-button
+              >
               <v-btn @click="clear" class="mx-2">Clear</v-btn>
               <v-spacer />
               <new-game-dialog @start="startGame" />
@@ -64,8 +64,9 @@ import ColorSelector from "@/components/ColorSelector.vue"
 import NewGameDialog from "@/components/NewGameDialog.vue"
 import HelpDialog from "@/components/HelpDialog.vue"
 import GameResultDialog from "@/components/GameResultDialog.vue"
+import ShakingButton from "@/components/ShakingButton.vue"
 import draggable from "vuedraggable"
-import { ref, onMounted } from "vue"
+import { ref, computed } from "vue"
 
 var logik = new Logik()
 
@@ -73,14 +74,27 @@ const maxGuesses = 10
 
 const drag = ref(false)
 const guesses = ref([])
-const shaking = ref(false)
 const showResult = ref(false)
 const resultSuccess = ref(false)
 const colorsToCheck = ref(getArray())
 const currentSettings = ref(null)
 
+const canCheck = computed(() => {
+  const colors = getSelectedColors()
+  return (
+    colors != undefined &&
+    colors.length > 0 &&
+    !colors.some((c) => c == undefined) &&
+    guesses.value.length < maxGuesses
+  )
+})
+
 function update(code, idx) {
   colorsToCheck.value[idx].code = code
+}
+
+function getSelectedColors() {
+  return Object.values(colorsToCheck.value).map((co) => co.code)
 }
 
 function getArray(colors) {
@@ -92,26 +106,16 @@ function getArray(colors) {
 }
 
 function check() {
-  const colors = Object.values(colorsToCheck.value).map((co) => co.code)
-  if (
-    colors.some((c) => c == undefined) ||
-    guesses.value.length >= maxGuesses ||
-    colors.length == 0
-  ) {
-    shaking.value = true
-    return
-  }
+  const colors = getSelectedColors()
   let answer = logik.check(colors)
   guesses.value.push(answer)
   if (answer.position == logik.slots) {
-    console.log("vyhrals")
     showResult.value = true
     resultSuccess.value = true
   } else if (
     guesses.value.length >= maxGuesses &&
     answer.position != logik.slots
   ) {
-    console.log("prohrals")
     showResult.value = true
     resultSuccess.value = false
   }
@@ -147,13 +151,6 @@ function startGame(settings) {
   colorsToCheck.value = getArray()
   console.log(colorsToCheck.value)
 }
-
-onMounted(() => {
-  // could it be done using ref?
-  document.querySelector("#btnCheck").addEventListener("animationend", () => {
-    shaking.value = false
-  })
-})
 </script>
 <style scoped>
 .game-wrapper {
@@ -165,33 +162,5 @@ onMounted(() => {
 
 .selector-container {
   display: inline-block;
-}
-
-/* Standard syntax */
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-.apply-shake {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>
