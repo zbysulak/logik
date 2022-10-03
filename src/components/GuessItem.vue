@@ -5,7 +5,7 @@
         v-for="c in guessColors"
         v-bind:key="c"
         class="mx-2 rounded-pill guess-item animate"
-        :style="{ backgroundColor: c }"
+        :color="c"
       ></v-sheet>
     </div>
     <div class="d-flex justify-center align-center">
@@ -19,7 +19,7 @@
         v-for="c in guess.position"
         v-bind:key="c"
       ></div>
-      <v-icon class="animate" v-if="guess.color == 0 && guess.position == 0"
+      <v-icon class="animate" v-if="guess.color === 0 && guess.position === 0"
         >mdi-cancel</v-icon
       >
     </div>
@@ -53,7 +53,7 @@ const guessColors = Object.values(props.guess.colors)
 }
 
 .animate:nth-child(1) {
-  animation-delay: 0;
+  animation-delay: 0ms;
 }
 .animate:nth-child(2) {
   animation-delay: 100ms;

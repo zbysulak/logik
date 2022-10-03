@@ -13,8 +13,8 @@
       <v-list-item
           v-for="c in colors"
           :key="c"
-          :style="{ backgroundColor: c }"
           class="ma-1 rounded"
+          :class="c"
           :value="c"
           @click="$emit('update:modelValue', c)"
       >
@@ -29,3 +29,40 @@ import {defineProps, defineEmits} from "vue"
 defineEmits(["update:modelValue"])
 defineProps(["colors", "modelValue"])
 </script>
+
+<style scoped>
+.red {
+  background-color: #F44336;
+}
+.green {
+  background-color: #4CAF50;
+}
+.blue {
+  background-color: #2196F3;
+}
+.yellow {
+  background-color: #FFEB3B;
+}
+.orange {
+  background-color: #FF9800;
+}
+.white {
+  background-color: #fff;
+}
+.black {
+  background-color: #000;
+}
+.pink {
+  background-color: #E91E63;
+}
+.brown {
+  background-color: #795548;
+}
+.purple {
+  background-color: #9C27B0;
+}
+.cyan {
+  background-color: #00BCD4;
+}
+
+</style>

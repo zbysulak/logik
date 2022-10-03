@@ -12,11 +12,11 @@ export default class Logic {
   }
 
   check(array) {
-    if (array.length != this.slots) throw "Wrong guess length"
+    if (array.length !== this.slots) throw "Wrong guess length"
     let position = 0
     let color = 0
     for (let i = 0; i < array.length; i++) {
-      if (array[i] == this.#target[i]) position++
+      if (array[i] === this.#target[i]) position++
     }
     let t = [...this.#target]
     for (let i = 0; i < array.length; i++) {
@@ -34,7 +34,7 @@ export default class Logic {
     if (this.#allowMultiple) colorsCopy = colorsCopy.concat(colorsCopy)
     if (colorsCopy.length < this.slots) throw "Not enough colors"
     let set = []
-    while (set.length != this.slots) {
+    while (set.length !== this.slots) {
       const idx = Math.floor(Math.random() * colorsCopy.length)
       set.push(colorsCopy[idx])
       colorsCopy.splice(idx, 1)
@@ -52,7 +52,7 @@ export default class Logic {
     "black",
     "pink",
     "brown",
-    "magenta",
+    "purple",
     "cyan"
   ]
 }
