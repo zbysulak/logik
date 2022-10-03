@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host localhost",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -12,7 +12,6 @@
     "core-js": "^3.8.3",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
-    "vuedraggable": "^4.1.0",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0"
   },
@@ -40,7 +39,8 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-      "vue/no-unused-vars" :"off"
+      "vue/no-unused-vars" :"off",
+      "no-unused-vars": "error"
     }
   },
   "browserslist": [
