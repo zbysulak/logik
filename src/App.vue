@@ -7,21 +7,21 @@
               v-for="g in guesses"
               :guess="g"
               v-bind:key="g"
-              @guessClicked="setColors"
+              @guessClicked="updateColors"
           />
         </div>
         <v-row class="mt-2 flex-grow-0">
           <v-container>
-              <draggable-color-selectors
-                  v-model="colorsToCheck"
-                  :used-colors="logik.usedColors"/>
+            <draggable-color-selectors
+                v-model="colorsToCheck"
+                :used-colors="logik.usedColors"/>
             <v-row class="mt-6">
               <shaking-button :enabled="canCheck" @clicked="check"
               >Check
               </shaking-button
               >
               <shaking-button
-                  :enabled="logik.usedColors != undefined"
+                  :enabled="logik.usedColors !== undefined"
                   @clicked="randomize"
               >Randomize
               </shaking-button
@@ -54,48 +54,55 @@ import ShakingButton from "@/components/ShakingButton.vue"
 import {ref, computed} from "vue"
 import DraggableColorSelectors from "@/components/DraggableColorSelectors";
 
-var logik = new Logik()
+const logik = new Logik()
 
 const maxGuesses = 10
 
 const guesses = ref([])
 const showResult = ref(false)
 const resultSuccess = ref(false)
-const colorsToCheck = ref(getArray())
+const colorsToCheck = ref(null)
 const currentSettings = ref(null)
 
 const canCheck = computed(() => {
   const colors = getSelectedColors()
   return (
-      colors != undefined &&
+      colors !== undefined &&
       colors.length > 0 &&
-      !colors.some((c) => c == undefined) &&
+      !colors.some((c) => c === undefined) &&
       guesses.value.length < maxGuesses
   )
 })
 
 function getSelectedColors() {
+  if (colorsToCheck.value == null) return undefined
   return Object.values(colorsToCheck.value).map((co) => co.code)
 }
 
-function getArray(colors) {
-  let array = []
-  for (let i = 0; i < logik.slots; i++) {
-    array.push({code: colors ? colors[i] : undefined, order: i})
+function updateColors(colors = []) {
+  if (colorsToCheck.value == null || colorsToCheck.value.length !== colors.length) {
+    let newArray = []
+    for (let i = 0; i < logik.slots; i++) {
+      newArray.push({code: colors ? colors[i] : undefined, id: i})
+    }
+    colorsToCheck.value = newArray
+  } else {
+    for (let i = 0; i < logik.slots; i++) {
+      colorsToCheck.value[i].code = colors ? colors[i] : undefined
+    }
   }
-  return array
 }
 
 function check() {
   const colors = getSelectedColors()
   let answer = logik.check(colors)
   guesses.value.push(answer)
-  if (answer.position == logik.slots) {
+  if (answer.position === logik.slots) {
     showResult.value = true
     resultSuccess.value = true
   } else if (
       guesses.value.length >= maxGuesses &&
-      answer.position != logik.slots
+      answer.position !== logik.slots
   ) {
     showResult.value = true
     resultSuccess.value = false
@@ -103,15 +110,11 @@ function check() {
 }
 
 function clear() {
-  colorsToCheck.value = getArray()
+  updateColors()
 }
 
 function randomize() {
-  colorsToCheck.value = getArray(logik.getRandomSet())
-}
-
-function setColors(colors) {
-  colorsToCheck.value = getArray(colors)
+  updateColors(logik.getRandomSet())
 }
 
 function restartGame() {
@@ -122,7 +125,7 @@ function startGame(settings) {
   currentSettings.value = settings
   guesses.value = []
   logik.startGame(settings)
-  colorsToCheck.value = getArray()
+  updateColors()
 }
 </script>
 <style scoped>
@@ -131,9 +134,5 @@ function startGame(settings) {
   min-height: 60%;
   max-width: 950px;
   margin-top: 100px;
-}
-
-.selector-container {
-  display: inline-block;
 }
 </style>

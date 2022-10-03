@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <transition-group name="swap">
-      <div v-for="(c,i) in props.modelValue" :key="c"
+      <div v-for="(c,i) in props.modelValue" :key="c.id"
            :data-idx="i"
            class="colorContainer"
            draggable="true"
@@ -70,12 +70,10 @@ function drop(event, droppedAt) {
     const elements = document.querySelectorAll(".colorContainer")
     const touch = event.changedTouches[0]
     for (const e of elements) {
-      console.log(e)
       if (e.dataset.idx === moving.dataset.idx) {
         continue
       }
       const pos = e.getBoundingClientRect()
-      console.log(pos)
       if (touch.clientX >= pos.left && touch.clientX <= pos.left + pos.width &&
           touch.clientY >= pos.top && touch.clientY <= pos.top + pos.height) {
         swap(moving.dataset.idx, e.dataset.idx)
