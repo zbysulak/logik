@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="dialog" :persistent="first">
     <template v-slot:activator="{ props }">
       <v-btn v-bind="props" class="ml-2"> Start new game </v-btn>
     </template>
@@ -17,7 +17,7 @@
         ></v-switch>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="secondary" @click="dialog = false">Close</v-btn>
+        <v-btn v-if="!first" color="secondary" @click="dialog = false">Close</v-btn>
         <v-btn color="primary" @click="start">Start game</v-btn>
       </v-card-actions>
     </v-card>
@@ -28,9 +28,10 @@
 import { ref, defineEmits } from "vue"
 const emit = defineEmits(["start"])
 const dialog = ref(true)
-const slots = ref(2)
-const colors = ref(3)
+const slots = ref(4)
+const colors = ref(6)
 const allowMultiple = ref(false)
+const first = ref(true)
 
 function start() {
   let settings = {
@@ -39,6 +40,7 @@ function start() {
     allowMultiple: allowMultiple.value
   }
   dialog.value = false
+  first.value = false
   emit("start", settings)
 }
 </script>
