@@ -52,10 +52,11 @@ function move(event) {
       Math.pow(touchStartEvent.changedTouches[0].clientX - event.changedTouches[0].clientX, 2) +
       Math.pow(touchStartEvent.changedTouches[0].clientY - event.changedTouches[0].clientY, 2) > 5
   ) {
-    const el = touchStartEvent.target.closest(".colorContainer").cloneNode(true)
+    const cc = touchStartEvent.target.closest(".colorContainer")
+    const el = cc.cloneNode(true)
     el.style.position = "fixed"
-    el.style.height = el.clientHeight;
-    el.style.width = el.clientWidth;
+    el.style.height = cc.clientHeight;
+    el.style.width = cc.clientWidth;
     document.body.appendChild(el)
     moving = el
   } else if (moving != null) {

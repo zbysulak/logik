@@ -4,11 +4,12 @@
       <v-sheet
         v-for="c in guessColors"
         v-bind:key="c"
-        class="mx-2 rounded-pill guess-item animate"
+        class="rounded-pill guess-item animate"
+        :class="$vuetify.display.mobile ? 'guess-item-mobile mx-1':'mx-2'"
         :color="c"
       ></v-sheet>
     </div>
-    <div class="d-flex justify-center align-center">
+    <div class="d-flex justify-center align-center ml-1 mb-2">
       <div
         class="result color rounded-circle animate"
         v-for="c in guess.color"
@@ -82,6 +83,11 @@ const guessColors = Object.values(props.guess.colors)
   width: 6.4em;
   height: 3em;
   border: 2px solid #303030;
+}
+
+.guess-item-mobile {
+  width: 2.5em;
+  height: 2.5em;
 }
 
 .result {
