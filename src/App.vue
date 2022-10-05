@@ -26,7 +26,7 @@
               >Randomize
               </shaking-button>
               <mobile-icon-button
-                  @clicked="clear"
+                  @click="clear"
                   mobile-icon="mdi-delete-outline"
               >Clear
               </mobile-icon-button>

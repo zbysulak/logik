@@ -1,6 +1,5 @@
 <template>
   <v-btn
-      @click="emit('clicked')"
       class="mx-2"
       :icon="$vuetify.display.mobile"
   >
@@ -11,9 +10,8 @@
   </v-btn>
 </template>
 <script setup>
-import {defineProps, defineEmits} from "vue"
+import {defineProps} from "vue"
 
 defineProps(["mobileIcon"])
-const emit = defineEmits(["clicked"])
 
 </script>
