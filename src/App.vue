@@ -16,17 +16,20 @@
                 v-model="colorsToCheck"
                 :used-colors="logik.usedColors"/>
             <v-row class="mt-6">
-              <shaking-button :enabled="canCheck" @clicked="check"
+              <shaking-button :enabled="canCheck" @clicked="check" mobile-icon="mdi-check"
               >Check
-              </shaking-button
-              >
+              </shaking-button>
               <shaking-button
                   :enabled="logik.usedColors !== undefined"
                   @clicked="randomize"
+                  mobile-icon="mdi-shuffle"
               >Randomize
-              </shaking-button
-              >
-              <v-btn @click="clear" class="mx-2">Clear</v-btn>
+              </shaking-button>
+              <mobile-icon-button
+                  @clicked="clear"
+                  mobile-icon="mdi-delete-outline"
+              >Clear
+              </mobile-icon-button>
               <v-spacer/>
               <new-game-dialog @start="startGame"/>
               <game-result-dialog
@@ -53,6 +56,7 @@ import GameResultDialog from "@/components/GameResultDialog.vue"
 import ShakingButton from "@/components/ShakingButton.vue"
 import {ref, computed} from "vue"
 import DraggableColorSelectors from "@/components/DraggableColorSelectors";
+import MobileIconButton from "@/components/MobileIconButton";
 
 const logik = new Logik()
 
@@ -134,5 +138,13 @@ function startGame(settings) {
   min-height: 60%;
   max-width: 950px;
   margin-top: 100px;
+}
+
+@media screen and (max-width: 600px) {
+  .game-wrapper {
+    min-height: 100%;
+    margin-top: 0;
+    border: 0;
+  }
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="dialog" :fullscreen="$vuetify.display.mobile">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" class="ml-2">help</v-btn>
+      <mobile-icon-button v-bind="props" class="ml-2" mobile-icon="mdi-help">Help</mobile-icon-button>
     </template>
     <v-card color="basil">
       <v-card-title class="text-center justify-center py-6"> Help</v-card-title>
       <v-tabs v-model="tab" background-color="transparent" grow>
-        <v-tab value="rules"> Rules </v-tab>
-        <v-tab value="controls"> Controls </v-tab>
+        <v-tab value="rules"> Rules</v-tab>
+        <v-tab value="controls"> Controls</v-tab>
       </v-tabs>
 
       <v-window v-model="tab">
@@ -65,14 +65,18 @@
         </v-window-item>
       </v-window>
       <v-card-actions
-        ><v-btn block @click="dialog = false">close</v-btn></v-card-actions
+      >
+        <v-btn block @click="dialog = false">close</v-btn>
+      </v-card-actions
       >
     </v-card>
   </v-dialog>
 </template>
 
 <script setup>
-import { ref } from "vue"
+import {ref} from "vue"
+import MobileIconButton from "@/components/MobileIconButton";
+
 const dialog = ref(false)
 const tab = ref(null)
 </script>

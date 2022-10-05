@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="dialog" :persistent="first">
+  <v-dialog v-model="dialog" :persistent="first" :fullscreen="$vuetify.display.mobile">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" class="ml-2"> Start new game </v-btn>
+      <mobile-icon-button v-bind="props" class="ml-2" mobile-icon="mdi-restart"> Start new game</mobile-icon-button>
     </template>
 
     <v-card width="600px">
@@ -11,9 +11,9 @@
         Number of colors: {{ colors }}
         <v-slider v-model="colors" step="1" min="2" max="11"></v-slider>
         <v-switch
-          color="primary"
-          v-model="allowMultiple"
-          label="Allow multiple colors"
+            color="primary"
+            v-model="allowMultiple"
+            label="Allow multiple colors"
         ></v-switch>
       </v-card-text>
       <v-card-actions>
@@ -25,7 +25,9 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue"
+import {ref, defineEmits} from "vue"
+import MobileIconButton from "@/components/MobileIconButton";
+
 const emit = defineEmits(["start"])
 const dialog = ref(true)
 const slots = ref(4)
@@ -44,5 +46,3 @@ function start() {
   emit("start", settings)
 }
 </script>
-
-<style lang="scss" scoped></style>

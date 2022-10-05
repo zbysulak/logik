@@ -1,19 +1,23 @@
 <template>
-  <v-btn
-    @click="checkClick"
-    ref="button"
-    id="btnCheck"
-    class="mx-2"
-    :class="{ shaking }"
+  <mobile-icon-button :mobile-icon="mobileIcon" @click="checkClick"
+                      ref="button"
+                      id="btnCheck"
+                      :class="{ shaking }"
   >
-    <slot>Button</slot>
-  </v-btn>
+    <slot></slot>
+  </mobile-icon-button>
 </template>
 
 <script>
+import MobileIconButton from "@/components/MobileIconButton";
+
 export default {
-  props: { enabled: { type: Boolean, required: true } },
-  data: () => ({ shaking: false }),
+  components: {MobileIconButton},
+  props: {
+    enabled: {type: Boolean, required: true},
+    mobileIcon: {type: String, required: true}
+  },
+  data: () => ({shaking: false}),
   methods: {
     checkClick() {
       if (this.enabled) {
