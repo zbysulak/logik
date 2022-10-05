@@ -1,10 +1,10 @@
 <template>
-  <v-dialog v-model="dialog" :persistent="first" :fullscreen="$vuetify.display.mobile">
+  <v-dialog v-model="dialog" :persistent="first" :fullscreen="$vuetify.display.mobile" :class="$vuetify.display.mobile?'ma-5':''">
     <template v-slot:activator="{ props }">
       <mobile-icon-button v-bind="props" class="ml-2" mobile-icon="mdi-restart"> Start new game</mobile-icon-button>
     </template>
 
-    <v-card width="600px">
+    <v-card :class="$vuetify.display.mobile?'rounded':''">
       <v-card-text>
         Number of slots: {{ slots }}
         <v-slider v-model="slots" step="1" min="2" max="6"></v-slider>
