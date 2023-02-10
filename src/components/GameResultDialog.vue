@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-bind:modelValue="dialog">
+  <v-dialog v-bind:modelValue="dialog" :fullscreen="$vuetify.display.mobile" :class="$vuetify.display.mobile?'ma-5':''">
     <v-card width="600px">
       <v-card-title>
         {{ success ? "You won!" : "You lost" }}
